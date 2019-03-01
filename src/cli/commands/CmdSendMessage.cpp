@@ -63,12 +63,16 @@ std::int32_t CmdSendMessage::nym(
     const auto contactid =
         Opentxs::Client().Contacts().ContactID(Identifier::Factory(hisnym));
 
-    auto task = Opentxs::Client().OTX().MessageContact(
+    auto success = false;
+    auto [taskid, future] = Opentxs::Client().OTX().MessageContact(
         Identifier::Factory(mynym), contactid, message);
 
-    const auto result = std::get<1>(task).get();
+    if (0 != taskid) {
+        const auto result = future.get();
+        
+        success = CmdBase::GetResultSuccess(result);
+    }
     
-    const auto success = CmdBase::GetResultSuccess(result);
     if (false == success) {
         LogOutput(OT_METHOD)(__FUNCTION__)(": Failed to send messasge.")
             .Flush();

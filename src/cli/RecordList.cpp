@@ -17,7 +17,7 @@
 #include <string>
 #include <utility>
 
-#define OT_METHOD "opentxs::RecordList"
+#define OT_METHOD "opentxs::cli::RecordList::"
 
 namespace
 {
@@ -1054,9 +1054,12 @@ std::int32_t RecordList::confirmPaymentPlan_lowLevel(  // a static method
 bool RecordList::checkMandatory(const char* name, const std::string& value)
 {
     if (value.empty()) {
-        LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+        LogNormal(" Error: ")(name)(
             ": mandatory parameter not specified.")
             .Flush();
+//        std::cout << "Error: " << name <<
+//			": mandatory parameter not specified." << std::endl;
+        return false;
     }
 
     return true;
@@ -1071,16 +1074,20 @@ bool RecordList::checkIndices(const char* name, const std::string& indices)
 
     for (std::string::size_type i = 0; i < indices.length(); i++) {
         if (!isdigit(indices[i])) {
-            LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+            LogNormal(" Error: ")(name)(
                 ": not a value: ")(indices)(".")
                 .Flush();
+//            std::cout << "Error: " << name <<
+//                ": not a value: " << indices << "." << std::endl;
             return false;
         }
         for (i++; i < indices.length() && isdigit(indices[i]); i++) {}
         if (i < indices.length() && ',' != indices[i]) {
-            LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+            LogNormal(" Error: ")(name)(
                 ": not a value: ")(indices)(".")
                 .Flush();
+//            std::cout << "Error: " << name << 
+//                ": not a value: " << indices << "." << std::endl;
             return false;
         }
     }
@@ -1132,15 +1139,18 @@ bool RecordList::checkServer(const char* name, std::string& server)
     }
 
     if (!pServer) {
-        LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+        LogNormal(" Error: ")(name)(
             ": unknown server: ")(server)(".")
             .Flush();
+//        std::cout << "Error: " << name <<
+//            ": unknown server: " << server << "." << std::endl;
         return false;
     }
 
     server = pServer->ID()->str();
-    LogNormal(OT_METHOD)(__FUNCTION__)(": Using ")(name)(": ")(server)(".")
+    LogNormal(" Using ")(name)(": ")(server)(".")
         .Flush();
+//    std::cout << "Using " << name << ": " << server << "." << std::endl;
     return true;
 }
 
@@ -1165,14 +1175,17 @@ bool RecordList::checkNym(
         pNym->GetIdentifier(tmp);
         nym = tmp->Get();
     } else if (checkExistance) {
-        LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+        LogNormal(" Error: ")(name)(
             ": unknown nym: ")(nym)(".")
             .Flush();
+//        std::cout << "Error: " << name <<
+//            ": unknown nym: " << nym << "." << std::endl;
         return false;
     }
 
-    LogNormal(OT_METHOD)(__FUNCTION__)(": Using ")(name)(": ")(nym)(".")
+    LogNormal(" Using ")(name)(": ")(nym)(".")
         .Flush();
+//    std::cout << "Using " << name << ": " << nym << "." << std::endl;
     return true;
 }
 
@@ -1192,9 +1205,11 @@ bool RecordList::checkAccount(const char* name, std::string& accountID)
             Opentxs::Client().Wallet().AccountPartialMatch(accountID);
 
         if (converted->empty()) {
-            LogNormal(OT_METHOD)(__FUNCTION__)(": Error: ")(name)(
+            LogNormal(" Error: ")(name)(
                 ": unknown account: ")(accountID)(".")
                 .Flush();
+//            std::cout << "Error: " << name << 
+//                ": unknown account: " << accountID << "." << std::endl;
             return false;
         }
 
@@ -1204,8 +1219,9 @@ bool RecordList::checkAccount(const char* name, std::string& accountID)
     OT_ASSERT(account)
 
     accountID = account.get().GetPurportedAccountID().str();
-    LogDetail(OT_METHOD)(__FUNCTION__)(": Using ")(name)(": ")(accountID)(".")
+    LogDetail(" Using ")(name)(": ")(accountID)(".")
         .Flush();
+//    std::cout << "Using " << name << ": " << accountID << "." << std::endl;
 
     return true;
 }

@@ -7,7 +7,7 @@
 
 #include <opentxs/opentxs.hpp>
 
-#define OT_METHOD "opentxs::CmdShowContacts::"
+//#define OT_METHOD "opentxs::CmdShowContacts::"
 
 namespace opentxs
 {
@@ -29,26 +29,32 @@ std::int32_t CmdShowContacts::run(std::string mynym)
 {
     if (!checkNym("mynym", mynym)) { return -1; }
 
-    const OTIdentifier nymID = Identifier::Factory({mynym});
-    auto& list = Opentxs::Client().UI().ContactList(nymID);
-    LogNormal(OT_METHOD)(__FUNCTION__)(": Contacts:").Flush();
-    dashLine();
-    auto line = list.First();
-    auto last = line->Last();
-    LogNormal(OT_METHOD)(__FUNCTION__)(": ")(line->Section())(" ")(
+	const OTIdentifier nymID = Identifier::Factory( { mynym });
+	auto& list = Opentxs::Client().UI().ContactList(nymID);
+    LogNormal(": Contacts:").Flush();
+//	std::cout << "Contacts:" << std::endl;
+	dashLine();
+	auto line = list.First();
+	auto last = line->Last();
+    LogNormal(": ")(line->Section())(" ")(
         line->DisplayName())(" (")(line->ContactID())(")")
         .Flush();
+//	std::cout << line->Section() << " " << line->DisplayName() << " ("
+//			<< line->ContactID() << ")" << std::endl;
 
-    while (false == last) {
-        line = list.Next();
-        last = line->Last();
-        LogNormal(OT_METHOD)(__FUNCTION__)(": ")(line->Section())("  ")(
+	while (false == last) {
+		line = list.Next();
+		last = line->Last();
+        LogNormal(": ")(line->Section())("  ")(
             line->DisplayName())(" (")(line->ContactID())(")")
             .Flush();
-    }
+//		std::cout << line->Section() << "  " << line->DisplayName() << " ("
+//				<< line->ContactID() << ")" << std::endl;
+	}
 
-    LogNormal(OT_METHOD)(__FUNCTION__)(" ").Flush();
+    LogNormal("\n").Flush();
+//	std::cout << std::endl;
 
-    return 1;
+	return 1;
 }
 }  // namespace opentxs

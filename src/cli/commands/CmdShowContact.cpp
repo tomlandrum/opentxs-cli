@@ -74,16 +74,17 @@ std::int32_t CmdShowContact::run(const std::string& id)
 
     const OTIdentifier contactID = Identifier::Factory(id);
     auto& contact = Opentxs::Client().UI().Contact(contactID);
-    LogNormal(OT_METHOD)(__FUNCTION__)(contact.DisplayName())(": (")(
-        contact.ContactID())(") Payment Code: ")(contact.PaymentCode())
+    LogNormal(" ")(contact.DisplayName())(": (")(
+        contact.ContactID())(")").Flush();
+    LogNormal(" Payment Code: ")(contact.PaymentCode())
         .Flush();
-    dashLine();
     auto section = contact.First();
 
     if (false == section->Valid()) { return 1; }
 
+    dashLine();
     auto lastSection = section->Last();
-    LogNormal(OT_METHOD)(__FUNCTION__)(": * ")(section->Name("en"))(" (")(
+    LogNormal(" * ")(section->Name("en"))(" (")(
         section->Type())(")")
         .Flush();
     display_groups(section);
@@ -91,13 +92,13 @@ std::int32_t CmdShowContact::run(const std::string& id)
     while (false == lastSection) {
         section = contact.Next();
         lastSection = section->Last();
-        LogNormal(OT_METHOD)(__FUNCTION__)(": * ")(section->Name("en"))(" (")(
+        LogNormal(" * ")(section->Name("en"))(" (")(
             section->Type())(")")
             .Flush();
         display_groups(section);
     }
 
-    LogNormal(OT_METHOD)(__FUNCTION__)(" ").Flush();
+    LogNormal("\n").Flush();
 
     return 1;
 }

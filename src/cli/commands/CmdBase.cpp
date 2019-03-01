@@ -726,8 +726,10 @@ bool CmdBase::checkValue(const char* name, const string& value) const
 void CmdBase::dashLine() const
 {
     // 76 dashes :-)
-    cout << "--------------------------------------"
-            "--------------------------------------\n";
+//    cout << "--------------------------------------"
+//            "--------------------------------------\n";
+	LogNormal("--------------------------------------")(
+			"--------------------------------------").Flush();
 }
 
 const vector<string>& CmdBase::extractArgumentNames()

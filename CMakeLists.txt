@@ -112,6 +112,11 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PEDANTIC_CXX_FLAGS}")
 
+if(APPLE)
+	include_directories(/usr/local/include)
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reserved-id-macro -Wno-zero-as-null-pointer-constant -Wno-undef -Wno-missing-noreturn -Wno-shift-sign-overflow -Wno-used-but-marked-unused -Wno-deprecated-dynamic-exception-spec -Wno-unused-parameter -Wno-exit-time-destructors -Wno-inconsistent-missing-destructor-override -Wno-documentation -Wno-extra-semi -Wno-old-style-cast -Wno-redundant-parens -Wno-switch-enum -Wno-non-virtual-dtor -Wno-documentation-unknown-command -Wno-comma -Wno-double-promotion -Wno-shadow-field -Wno-deprecated")
+endif()
+
 message(STATUS "C++ Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "C++ Flags:       ${CMAKE_CXX_FLAGS}")
 message(STATUS "C++ link flags:  ${CMAKE_CXX_LINK_FLAGS}")

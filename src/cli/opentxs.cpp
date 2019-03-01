@@ -629,10 +629,10 @@ int Opentxs::processCommand(AnyOption& opt)
             for (auto i = 0; i < newArgc; ++i) {
                 newArgv[i] = const_cast<char*>(c.args[i].c_str());
                 if (i) {
-                    std::cout << std::string(newArgv[i]) << " " << std::endl;
+                    std::cout << std::string(newArgv[i]) << " ";
                 }
             }
-            std::cout << " " << std::endl;
+            std::cout << std::endl;
             opt.processCommandArgs(newArgc, newArgv);
             command = newArgv[1];
         }
@@ -649,7 +649,8 @@ int Opentxs::processCommand(AnyOption& opt)
 
         for (std::size_t i = 0; i < cmds_.size(); ++i) {
             CmdBase& cmd = *cmds_[i];
-            std::cout << cmd.getCommand() + spaces24.substr(0, 24) << std::endl;
+            const std::string command = cmd.getCommand();
+            std::cout << command << spaces24.substr(command.length(), 24);
             if (i % 4 == 3) { std::cout << " " << std::endl; }
         }
         std::cout << " " << std::endl;
@@ -699,8 +700,9 @@ int Opentxs::processCommand(AnyOption& opt)
             std::cout << idx << ":";
             Command& c = history[idx];
             for (size_t i = 1; i < c.args.size(); ++i) {
-                std::cout << " " << c.args[i] << std::endl;
+                std::cout << " " << c.args[i];
             }
+            std::cout << std::endl;
         }
 
         return 0;
